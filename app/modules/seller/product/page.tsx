@@ -1,4 +1,5 @@
-import ProductList from "@/app/components/product/ProductList";
+import Category from "@/app/components/seller/category/Category";
+import ProductList from "@/app/components/seller/product/ProductList";
 
 
 

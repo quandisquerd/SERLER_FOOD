@@ -1,7 +1,7 @@
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Checkbox } from 'antd';
 import React, { useState } from 'react'
-import { Collapse, Table, Button } from 'antd';
+import { Collapse, Table, Button, Switch } from 'antd';
 type Props = {}
 
 const ToppingInProduct = ({ data }: any) => {
@@ -14,6 +14,14 @@ const ToppingInProduct = ({ data }: any) => {
         setopen(true)
     }
     const columns = [
+        {
+            title: '',
+            dataIndex: '',
+            key: '',
+            render: () => (
+                <Checkbox defaultChecked></Checkbox>
+            )
+        },
         {
             title: 'Name',
             dataIndex: 'name',
@@ -35,18 +43,32 @@ const ToppingInProduct = ({ data }: any) => {
             )
         },
     ];
+   
+    const onChangeTopping = (checked: boolean) => {
+        console.log(`switch to ${checked}`);
+    };
     const items: any = data?.map((data: any) => {
         return (
             {
                 key: `${data?.id}`,
-                label: `${data?.name}`,
-                children: <Table dataSource={data?.sub_toppings} columns={columns} pagination={false} />,
+                label: (
+                    <div className="flex items-center justify-between">
+                        <span>{data?.name}</span>
+                        <Switch defaultChecked onChange={onChangeTopping} />
+                    </div>
+                ),
+                children: (<div className="">
+                    <Table dataSource={data?.sub_toppings} columns={columns} pagination={false} />
+                    <div className="flex mt-2">
+                    <Button className='ml-auto bg-blue-500 text-yellow-50'>Lưu</Button>
+                    </div>
+                </div>),
             }
         )
     })
     return (
         <div>
-            <Collapse items={items} defaultActiveKey={['1']} />
+            <Collapse items={items} />
         </div>
 
     )

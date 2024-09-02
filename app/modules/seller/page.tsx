@@ -18,7 +18,7 @@ const page = (props: Props) => {
     }
     const onChangMenu = () => {
         setIsLoading(true)
-        router.push('/modules/seller/category');
+        router.push('/modules/seller/menus');
     }
     return (
         <>

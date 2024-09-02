@@ -1,10 +1,18 @@
-import { useUpdateViewProductInCategoryMutation } from "@/app/api/product";
+
 import FormatTotal from "@/app/utils/FormatTotal";
 import { Switch, Table, message } from "antd";
+import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import LoadingOverlay from "../../loading/Loading";
+import './style.css';
+import { useUpdateToppingInProductMutation } from "@/app/api/category";
 
-const ProductInCategory = ({ data ,onRefetch}: any) => {
+
+const ProductInCategory = ({ data, onRefetch }: any) => {
+    const router: any = useRouter()
     const [messageApi, contextHolder] = message.useMessage();
-    const [updateview, { isLoading }] = useUpdateViewProductInCategoryMutation()
+    const [updateview, { isLoading: loadingview }] = useUpdateToppingInProductMutation()
+    const [isLoading, setIsLoading] = useState<any>();
     const HandleView = (product: any, e: any) => {
         const dataproduct = {
             name: product?.name,
@@ -14,7 +22,7 @@ const ProductInCategory = ({ data ,onRefetch}: any) => {
             image: product?.image,
             view: e
         }
-        updateview({id:product.id,product:dataproduct})
+        updateview({ id: product.id, product: dataproduct })
             .unwrap()
             .then(() => {
                 if (e) {
@@ -36,7 +44,9 @@ const ProductInCategory = ({ data ,onRefetch}: any) => {
             dataIndex: 'image',
             key: 'Image',
             render: (image: any) => (
-                <img src={image} className="w-20" />
+                <div className='ml-auto relative rounded'>
+                    <img alt="food" className='w-[100px] h-[100px] object-cover rounded' src={image} />
+                </div>
             ),
         },
         {
@@ -64,11 +74,15 @@ const ProductInCategory = ({ data ,onRefetch}: any) => {
         },
     ];
     const handleRowClick = (record: any) => {
-        alert(record?.name)
+        setIsLoading(true)
+        router.push(`/modules/seller/menus/${record?.id}`);
     };
     return (
         <>
             {contextHolder}
+            {isLoading ? (
+                <LoadingOverlay />
+            ) : ""}
             <Table dataSource={data} columns={columns} pagination={false} rowKey="id" onRow={(record) => ({
                 onClick: () => handleRowClick(record),
             })} />

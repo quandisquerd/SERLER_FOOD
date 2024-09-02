@@ -16,10 +16,46 @@ const apiCategory = createApi({
             query: () => "/getproductincategory",
             providesTags: ["Category"],
         }),
+        getToppingInProductInCategory: builder.query({
+            query: (id: any) => ({
+                url: `/product/${id}`,
+            }),
+            providesTags: ["Category"],
+        }),
+
+        updateToppingInProduct: builder.mutation({
+            query: ({ id, data }: any) => ({
+                url: `product/${id}/update/`,
+                method: "PUT",
+                body: data,
+            }),
+            invalidatesTags: ["Category"],
+        }),
+        getOneProduct: builder.query({
+            query: (id: any) => `/products/${id}`,
+            providesTags: ["Category"],
+        }),
+        getAllCategory: builder.query({
+            query: (id: any) => `/category`,
+            providesTags: ["Category"],
+        }),
+        createProduct: builder.mutation({
+            query: ( data ) => ({
+                url: `products/`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Category"],
+        }),
     }),
 });
 export const {
-    useGetProductInCategoryQuery
+    useGetProductInCategoryQuery,
+    useGetToppingInProductInCategoryQuery,
+    useUpdateToppingInProductMutation,
+    useGetOneProductQuery,
+    useGetAllCategoryQuery,
+    useCreateProductMutation
 } = apiCategory;
 export const productReducer = apiCategory.reducer;
 export default apiCategory;

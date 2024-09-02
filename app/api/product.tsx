@@ -17,7 +17,7 @@ const apiProduct = createApi({
             providesTags: ["Product"],
         }),
         updateViewProductInCategory: builder.mutation({
-            query: ({id,product}:any) => ({
+            query: ({ id, product }: any) => ({
                 url: `/product/${id}/updateview/`,
                 method: "PATCH",
                 body: product,
@@ -28,7 +28,6 @@ const apiProduct = createApi({
 });
 export const {
     useGetAllProductQuery,
-    useUpdateViewProductInCategoryMutation
 } = apiProduct;
 export const productReducer = apiProduct.reducer;
 export default apiProduct;

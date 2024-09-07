@@ -24,10 +24,10 @@ const apiCategory = createApi({
         }),
 
         updateToppingInProduct: builder.mutation({
-            query: ({ id, data }: any) => ({
+            query: ({ id, product }: any) => ({
                 url: `product/${id}/update/`,
                 method: "PUT",
-                body: data,
+                body: product,
             }),
             invalidatesTags: ["Category"],
         }),
@@ -47,6 +47,28 @@ const apiCategory = createApi({
             }),
             invalidatesTags: ["Category"],
         }),
+        createCategory: builder.mutation({
+            query: (data) => ({
+                url: `category/`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Category"],
+        }),
+        deleteProduct: builder.mutation({
+            query: (id) => ({
+                url: `products/${id}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Category"],
+        }),
+        removeCategory: builder.mutation({
+            query: (id) => ({
+                url: `category/${id}/`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Category"],
+        }),
     }),
 });
 export const {
@@ -55,7 +77,10 @@ export const {
     useUpdateToppingInProductMutation,
     useGetOneProductQuery,
     useGetAllCategoryQuery,
-    useCreateProductMutation
+    useCreateProductMutation,
+    useCreateCategoryMutation,
+    useDeleteProductMutation,
+    useRemoveCategoryMutation,
 } = apiCategory;
 export const productReducer = apiCategory.reducer;
 export default apiCategory;

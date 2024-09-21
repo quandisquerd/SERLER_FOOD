@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { pause } from "../utils/pause";
-
+const api_url: any = process.env.NEXT_PUBLIC_API_URL;
 const apiCategory = createApi({
     reducerPath: "category",
     tagTypes: ["Category"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: api_url,
         fetchFn: async (...args) => {
             // await pause(1000);
             return fetch(...args);
@@ -25,18 +24,18 @@ const apiCategory = createApi({
 
         updateToppingInProduct: builder.mutation({
             query: ({ id, product }: any) => ({
-                url: `product/${id}/update/`,
+                url: `product/${id}/update`,
                 method: "PUT",
                 body: product,
             }),
             invalidatesTags: ["Category"],
         }),
         getOneProduct: builder.query({
-            query: (id: any) => `/products/${id}`,
+            query: (id: any) => `/products/${id}/`,
             providesTags: ["Category"],
         }),
         getAllCategory: builder.query({
-            query: (id: any) => `/category`,
+            query: (id: any) => `/category/`,
             providesTags: ["Category"],
         }),
         createProduct: builder.mutation({

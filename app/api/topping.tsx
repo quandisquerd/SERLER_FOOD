@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { pause } from "../utils/pause";
+const api_url: any = process.env.NEXT_PUBLIC_API_URL;
 
 const apiTopping = createApi({
     reducerPath: "topping",
     tagTypes: ["Topping"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: api_url,
         fetchFn: async (...args) => {
             // await pause(1000);
             return fetch(...args);
@@ -17,12 +17,12 @@ const apiTopping = createApi({
             providesTags: ["Topping"],
         }),
         getOneTopping: builder.query({
-            query: (id: any) => `/topping/${id}`,
+            query: (id: any) => `/topping/${id}/`,
             providesTags: ["Topping"],
         }),
         createSubtoppingInTopping: builder.mutation({
             query: (data) => ({
-                url: `createsubtopping/`,
+                url: `createsubtopping`,
                 method: "POST",
                 body: data,
             }),

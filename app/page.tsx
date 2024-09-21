@@ -1,19 +1,44 @@
 'use client';
 import './globals.css';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, message } from 'antd';
 import { useRouter } from 'next/navigation';
-import { useGetAllProductQuery } from './api/product';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import LoadingOverlay from './components/loading/Loading';
+import Link from 'next/link';
+import { encryptMessage } from './utils/criypto';
+import { useLoginMutation } from './api/auth';
+import Cookies from 'js-cookie';
 
 export default function Home() {
     const router = useRouter()
+    const [messageApi, contextHolder] = message.useMessage();
     const [isLoading, setIsLoading] = useState<any>();
+    const [login, { isLoading: loadinLogin }] = useLoginMutation()
     const onFinish: any = (values: any) => {
-        setIsLoading(true)
-        router.push('/modules/seller');
+        const data_endcrypt = encryptMessage({ "email": values?.email, "password": values?.password })
+        const data = {
+            "data": data_endcrypt
+        }
+        login(data)
+            .unwrap()
+            .then((res: any) => {
+                if (res?.status == true) {
+                    messageApi.success(res?.message);
+                    console.log(res);
+                    localStorage.setItem("user", JSON.stringify(res?.data))
+                    Cookies.set('auth', res?.data);
+                    setTimeout(() => {
+                        // router.push('/modules/seller');
+                    }, 300);
 
+                } else {
+                    messageApi.error(res?.data?.error);
+                }
+            })
+            .catch((err: any) => {
+                messageApi.error(err?.data?.error);
+            })
     };
 
     const onFinishFailed: any = (errorInfo: any) => {
@@ -21,6 +46,8 @@ export default function Home() {
     };
     return (
         <>
+            {contextHolder}
+            {loadinLogin && <LoadingOverlay />}
             {isLoading ? (
                 <LoadingOverlay />
             ) : ""}
@@ -35,9 +62,9 @@ export default function Home() {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Username"
-                        name="username"
-                        rules={[{ required: true, message: 'Please input your username!' }]}
+                        label="Email"
+                        name="email"
+                        rules={[{ required: true, message: 'Please input your email!' }]}
                     >
                         <Input />
                     </Form.Item>
@@ -54,9 +81,13 @@ export default function Home() {
                         name="remember"
                         valuePropName="checked"
                         wrapperCol={{ offset: 8, span: 16 }}
+                        className='w-full'
                     >
-                        <Checkbox>Remember me</Checkbox>
+                        <div className=''>
+                            Bạn chưa có tài khoản? <Link href="modules/register"> Đăng kí! </Link>
+                        </div>
                     </Form.Item>
+
 
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Button type="primary" htmlType="submit">

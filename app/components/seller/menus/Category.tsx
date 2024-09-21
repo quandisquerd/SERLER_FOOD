@@ -8,6 +8,7 @@ import { DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
 const { Option } = Select;
 import { useGetAllToppingQuery } from '@/app/api/topping';
 import { useForm } from 'antd/es/form/Form';
+import { encryptMessage } from '@/app/utils/criypto';
 const Category = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = useForm();
@@ -147,9 +148,16 @@ const Category = () => {
     const HandleTopping = (value: any) => {
         setTopping(value);
     }
+    const crypto=()=>{
+        const text = "father Quan"
+        const encrypted = encryptMessage(text)
+        console.log(encrypted);
+        
+    }
 
     return (
         <div >
+            <button onClick={crypto}> encrypt</button>
             {contextHolder}
             <div className=" flex">
                 <button className="pb-2 pl-2 line-clamp-3 mr-2" onClick={showDrawer} ><PlusOutlined className='mr-1' />Thêm</button>

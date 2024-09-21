@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// import { pause } from "../utils/pause";
+const api_url: any = process.env.NEXT_PUBLIC_API_URL;
 
 const apiProduct = createApi({
     reducerPath: "product",
     tagTypes: ["Product"],
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://127.0.0.1:8000/api",
+        baseUrl: api_url,
         fetchFn: async (...args) => {
             // await pause(1000);
             return fetch(...args);

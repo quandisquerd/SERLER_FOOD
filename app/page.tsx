@@ -29,7 +29,7 @@ export default function Home() {
                     localStorage.setItem("user", JSON.stringify(res?.data))
                     Cookies.set('auth', res?.data);
                     setTimeout(() => {
-                        // router.push('/modules/seller');
+                        router.push('/modules');
                     }, 300);
 
                 } else {
@@ -84,7 +84,7 @@ export default function Home() {
                         className='w-full'
                     >
                         <div className=''>
-                            Bạn chưa có tài khoản? <Link href="modules/register"> Đăng kí! </Link>
+                            Bạn chưa có tài khoản? <Link href="register"> Đăng kí! </Link>
                         </div>
                     </Form.Item>
 

@@ -25,9 +25,9 @@ export default function Home() {
             .then((res: any) => {
                 if (res?.status == true) {
                     messageApi.success(res?.message);
-                    console.log(res);
+                    setIsLoading(true)
                     localStorage.setItem("user", JSON.stringify(res?.data))
-                    Cookies.set('auth', res?.data);
+                    Cookies.set('auth', res?.data, { expires: 365 });
                     setTimeout(() => {
                         router.push('/modules');
                     }, 300);
@@ -84,7 +84,7 @@ export default function Home() {
                         className='w-full'
                     >
                         <div className=''>
-                            Bạn chưa có tài khoản? <Link href="register"> Đăng kí! </Link>
+                            Bạn chưa có tài khoản? <Link href="/register"> Đăng kí! </Link>
                         </div>
                     </Form.Item>
 

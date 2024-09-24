@@ -11,6 +11,8 @@ const page = () => {
     const [loading, setLoading] = useState<any>(false)
     const user = JSON.parse(localStorage.getItem('user')!)
     const data_decrypto = decryptMessage(user)
+    console.log(data_decrypto);
+    
     const dec = JSON.parse(data_decrypto)
     const { data } = useCheckRestaurantQuery(dec?.id)
 

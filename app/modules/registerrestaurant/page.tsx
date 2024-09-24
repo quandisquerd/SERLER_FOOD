@@ -30,6 +30,7 @@ const FormRegisteRestaurant = () => {
     const [lat, setLat] = useState<any>()
     const [lng, setLng] = useState<any>()
     const [descdetail, setDescdetail] = useState<any>()
+    const [title, setTitle] = useState<any>()
     const [createRes] = useCreateRestaurantMutation()
     const handleProvince = (e: any) => {
         const selectedValue = e;
@@ -89,9 +90,11 @@ const FormRegisteRestaurant = () => {
             "address": `${districtName}, ${wardname},${descdetail} `,
             "lat": lat,
             "lng": lng,
-            "avarta": avatar,
-            "banner": banner
+            "avatar": avatar,
+            "banner": banner,
+            "title": title
         }
+        console.log(data);
         createRes(data)
             .unwrap()
             .then((res: any) => {
@@ -127,6 +130,10 @@ const FormRegisteRestaurant = () => {
                         <label htmlFor="useremail" className="block text-sm font-medium text-gray-700">Tên quán <span className="text-red-600">*</span></label>
                         <Input type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="useremail" placeholder="Nhập tên quán" onChange={(e: any) => setName(e?.target?.value)} required />
                     </Form.Item>
+                    <Form.Item>
+                        <label htmlFor="useremail" className="block text-sm font-medium text-gray-700">Tiêu đề quán <span className="text-red-600">*</span></label>
+                        <Input type="text" className="mt-1 block w-full border-gray-300 rounded-md shadow-sm" id="useremail" placeholder="Nhập tiêu đề quán" onChange={(e: any) => setTitle(e?.target?.value)} required />
+                    </Form.Item>
 
 
                     <Form.Item
@@ -135,7 +142,7 @@ const FormRegisteRestaurant = () => {
                         validateTrigger={["onChange", "onBlur"]}
                     >
                         <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">Ảnh <span className="text-red-600">*</span></label>
-                        {avatar ? <Image src={avatar} style={{width:'170px' , height:"170px"}}/> : <Upload.Dragger {...props} multiple accept=".jpg,.png">
+                        {avatar ? <Image src={avatar} style={{ width: '170px', height: "170px" }} /> : <Upload.Dragger {...props} multiple accept=".jpg,.png">
                             <Button icon={<UploadOutlined />}>Ảnh đại diện</Button>
                         </Upload.Dragger>}
 
@@ -148,7 +155,7 @@ const FormRegisteRestaurant = () => {
                         {banner ? <Image src={banner} style={{ height: "170px" }} /> : <Upload.Dragger {...props1} multiple accept=".jpg,.png">
                             <Button icon={<UploadOutlined />}>Ảnh bìa</Button>
                         </Upload.Dragger>}
-                      
+
                     </Form.Item>
 
 
@@ -237,7 +244,7 @@ const FormRegisteRestaurant = () => {
                                 placeholder="Chọn loại hình kinh doanh"
                                 onChange={(e) => setResType(e)}
                             >
-                                {data?.map((item: any) => (
+                                {data?.result?.map((item: any) => (
                                     <Option key={item?.id} value={item?.id}>
                                         {item?.name}
                                     </Option>

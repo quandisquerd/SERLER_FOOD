@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import LoadingOverlay from '../../loading/Loading'
 import { useForm } from 'antd/es/form/Form'
 import FormatTotal from '@/app/utils/FormatTotal'
+import { decryptMessage } from '@/app/utils/criypto'
 
 type Props = {}
 
@@ -15,7 +16,10 @@ const ListTopping = (props: Props) => {
     const [form] = useForm();
     const router: any = useRouter()
     const [isLoading, setIsLoading] = useState<any>();
-    const { data } = useGetAllToppingQuery(0)
+    const user = JSON.parse(localStorage.getItem('user')!)
+    const data_decrypto = decryptMessage(user)
+    const dec = JSON.parse(data_decrypto)
+    const { data } = useGetAllToppingQuery(dec?.token)
     const [open1, setOpen1] = useState(false);
     const [name, setName] = useState<any>()
     const [name1, setname1] = useState<any>()
@@ -40,7 +44,7 @@ const ListTopping = (props: Props) => {
     const onSubmit1 = () => {
         const data = {
             name: name,
-            sub_toppings: subtopping.map((item:any) => ({
+            sub_toppings: subtopping.map((item: any) => ({
                 ...item,
                 view: true
             }))

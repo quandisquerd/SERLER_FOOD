@@ -7,14 +7,18 @@ const apiTopping = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: api_url,
         fetchFn: async (...args) => {
-            // await pause(1000);
             return fetch(...args);
         },
     }),
     endpoints: (builder) => ({
         getAllTopping: builder.query({
-            query: () => "/gettopping",
+            query: (token: any) => ({
+                url: `/gettopping`,
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            }),
             providesTags: ["Topping"],
+
         }),
         getOneTopping: builder.query({
             query: (id: any) => `/topping/${id}/`,
@@ -29,7 +33,7 @@ const apiTopping = createApi({
             invalidatesTags: ["Topping"],
         }),
         updateViewSubtoppingInTopping: builder.mutation({
-            query: ({id,data}) => ({
+            query: ({ id, data }) => ({
                 url: `/subtopping/${id}/`,
                 method: "PUT",
                 body: data,
@@ -52,7 +56,7 @@ const apiTopping = createApi({
             invalidatesTags: ["Topping"],
         }),
         createTopping: builder.mutation({
-            query: ( data) => ({
+            query: (data) => ({
                 url: `/topping/`,
                 method: "POST",
                 body: data,

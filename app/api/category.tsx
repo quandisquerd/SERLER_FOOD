@@ -12,8 +12,13 @@ const apiCategory = createApi({
     }),
     endpoints: (builder) => ({
         getProductInCategory: builder.query({
-            query: () => "/getproductincategory",
+            query: (token: any) => ({
+                url: `/getproductincategory`,
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            }),
             providesTags: ["Category"],
+
         }),
         getToppingInProductInCategory: builder.query({
             query: (id: any) => ({
@@ -39,7 +44,7 @@ const apiCategory = createApi({
             providesTags: ["Category"],
         }),
         createProduct: builder.mutation({
-            query: ( data ) => ({
+            query: (data) => ({
                 url: `products/`,
                 method: "POST",
                 body: data,
@@ -50,7 +55,8 @@ const apiCategory = createApi({
             query: (data) => ({
                 url: `category/`,
                 method: "POST",
-                body: data,
+                headers: { "Authorization": `Bearer ${data?.token}` },
+                body: data?.data,
             }),
             invalidatesTags: ["Category"],
         }),

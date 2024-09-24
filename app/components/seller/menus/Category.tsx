@@ -8,6 +8,7 @@ import { DeleteOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons'
 const { Option } = Select;
 import { useGetAllToppingQuery } from '@/app/api/topping';
 import { useForm } from 'antd/es/form/Form';
+import { decryptMessage } from '@/app/utils/criypto';
 const Category = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [form] = useForm();
@@ -20,8 +21,11 @@ const Category = () => {
     const [price, setprice] = useState<any>()
     const [category, setCategory] = useState<any>()
     const [description, setDescription] = useState<any>()
-    const { data, isLoading, refetch } = useGetProductInCategoryQuery(0)
-    const { data: topping } = useGetAllToppingQuery(0)
+    const user = JSON.parse(localStorage.getItem('user')!)
+    const data_decrypto = decryptMessage(user)
+    const dec = JSON.parse(data_decrypto)
+    const { data, isLoading, refetch } = useGetProductInCategoryQuery(dec?.token)
+    const { data: topping } = useGetAllToppingQuery(dec?.token)
     const [create, { isLoading: loading }] = useCreateProductMutation()
     const [createcategory, { isLoading: loadingcategory }] = useCreateCategoryMutation()
     const [removeCategory] = useRemoveCategoryMutation()
@@ -112,12 +116,12 @@ const Category = () => {
                 });
             });
     }
+    
     const onSubmit1 = () => {
         const data = {
             name: name,
         }
-
-        createcategory(data)
+        createcategory({ data: data, token: dec?.token})
             .unwrap()
             .then(() => {
                 messageApi.success('Tạo danh mục thành công')

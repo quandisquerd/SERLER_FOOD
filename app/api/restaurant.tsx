@@ -20,17 +20,25 @@ const apiRestaurant: any = createApi({
             providesTags: ["Restaurant"],
         }),
         createRestaurant: builder.mutation({
-             query: (data) => ({
+            query: (data) => ({
                 url: `/restaurant/createRestaurant`,
-                 method: "POST",
-                 headers: {
-                     'Content-Type': 'application/json'
-                 },
-                 body: data
-             }),
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            }),
             invalidatesTags: ["Restaurant"],
-         }),
+        }),
+        getRestaurantUser: builder.query({
+            query: (token: any) => ({
+                url: `/restaurant/getrestaurantuser`,
+                method: "GET",
+                headers: { "Authorization": `Bearer ${token}` }
+            }),
+            providesTags: ["Restaurant"],
 
+        }),
 
     }),
 });
@@ -38,6 +46,7 @@ export const {
     useCheckRestaurantQuery,
     useRestaurantTypeQuery,
     useCreateRestaurantMutation,
+    useGetRestaurantUserQuery
 } = apiRestaurant;
 export const authReducer = apiRestaurant.reducer;
 export default apiRestaurant;

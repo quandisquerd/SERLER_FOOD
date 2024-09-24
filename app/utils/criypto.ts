@@ -14,7 +14,7 @@ export function decryptMessage(ciphertext: any): any {
 
         // Giải mã sử dụng AES-ECB
         const decrypted :any = CryptoJS.AES.decrypt(
-            { ciphertext: decodedCiphertext },
+            ciphertext,
             CryptoJS.enc.Utf8.parse(key),
             {
                 mode: CryptoJS.mode.ECB,

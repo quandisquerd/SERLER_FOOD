@@ -7,7 +7,24 @@ export function encryptMessage(message: any): string {
         padding: CryptoJS.pad.Pkcs7
     }).toString();
 }
-export function decryptMessage(ciphertext: string): string {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, key);
-    return bytes.toString(CryptoJS.enc.Utf8);
+export function decryptMessage(ciphertext: any): any {
+    try {
+        // Giải mã từ Base64
+        const decodedCiphertext :any = CryptoJS.enc.Base64.parse(ciphertext);
+
+        // Giải mã sử dụng AES-ECB
+        const decrypted :any = CryptoJS.AES.decrypt(
+            { ciphertext: decodedCiphertext },
+            CryptoJS.enc.Utf8.parse(key),
+            {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7,
+            }
+        );
+
+        return decrypted.toString(CryptoJS.enc.Utf8);
+    } catch (error:any) {
+        console.error("Error during decryption:", error.message);
+        return '';
+    }
 }
